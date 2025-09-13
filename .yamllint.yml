@@ -1,23 +1,13 @@
 extends: default
 
 rules:
-  truthy:
-    check-keys: false
-    allowed-values: ["true", "false", "on", "off", "yes", "no"]
-    level: warning
-
   line-length:
-    max: 180
-    level: warning
-
-  trailing-spaces: { level: warning }
-  indentation:
-    indent-sequences: consistent
-    level: warning
-
-  # Чуть расслабим для списков в одну строку и инлайновых словарей
-  brackets: { level: warning }
-  commas:   { level: warning }
-  empty-lines:
-    max: 1
-    level: warning
+    max: 200
+    level: warning   # не валим билд из-за длины строк
+  document-start: disable
+  truthy:
+    allowed-values: ["true", "false"]
+    check-keys: false
+  comments:
+    min-spaces-from-content: 1
+  trailing-spaces: enable
