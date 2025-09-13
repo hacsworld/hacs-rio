@@ -1,13 +1,23 @@
 extends: default
 
 rules:
-  line-length:
-    max: 120          # Разрешаем до 120 символов в строке
-    level: warning
   truthy:
-    level: warning    # "Истина"/"Ложь" не будут валить билд
-  comments-indentation: disable
+    check-keys: false
+    allowed-values: ["true", "false", "on", "off", "yes", "no"]
+    level: warning
+
+  line-length:
+    max: 180
+    level: warning
+
+  trailing-spaces: { level: warning }
   indentation:
-    indent-sequences: false
-  document-start:
-    present: false    # "---" не обязателен
+    indent-sequences: consistent
+    level: warning
+
+  # Чуть расслабим для списков в одну строку и инлайновых словарей
+  brackets: { level: warning }
+  commas:   { level: warning }
+  empty-lines:
+    max: 1
+    level: warning
