@@ -1,4 +1,5 @@
 name: ci
+
 on:
   push:
     branches: [ main ]
@@ -18,29 +19,17 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install yamllint
-        run: pip install yamllint
+      - name: Install tools
+        run: |
+          pip install --upgrade pip
+          pip install yamllint
 
       - name: Lint YAML (repo-wide)
         run: |
-          if [ -f ".yamllint.yml" ] || [ -f ".yamllint.yaml" ] || [ -f ".yamllint" ]; then
-            yamllint . || true
-          else
-            cat > .yamllint.yml <<'YML'
-            extends: default
-            rules:
-              line-length:
-                max: 200
-                level: warning
-              document-start: disable
-              truthy:
-                allowed-values: ["true", "false"]
-                check-keys: false
-              comments:
-                min-spaces-from-content: 1
-              trailing-spaces: enable
-            YML
+          if [ -f ".yamllint.yml" ]; then
             yamllint -c .yamllint.yml . || true
+          else
+            echo "No .yamllint.yml found, skipping"
           fi
 
       - name: Install project requirements (optional)
@@ -53,14 +42,11 @@ jobs:
           fi
 
       - name: Python sanity
-        run: |
-          python - <<'PY'
-          print("python ok")
-          PY
+        run: python -c "print('python ok')"
 
       - name: Run tests (skip if none)
         run: |
-          if [ -d "tests" ] || [ -f "pytest.ini" ]; then
+          if [ -d "tests" ] || [ -f 'pytest.ini' ]; then
             pytest || true
           else
             echo "No tests found – skipping"
