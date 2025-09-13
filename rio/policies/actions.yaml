@@ -1,19 +1,23 @@
 ---
 version: 1
 updated_at: 2025-01-01T00:00:00Z
+
 actions:
   auth.signin:
     roles: [guest, user, admin]
     effect: allow
     intent: "auth.signin"
+
   order.create:
     roles: [user, admin]
     effect: allow
     intent: "order.create"
+
   user.invite:
     roles: [admin]
     effect: allow
     intent: "user.invite"
+
   user.block:
     roles: [admin]
     effect: allow
