@@ -1,24 +1,34 @@
 ---
 version: 1
+
 types:
   - type: heading
     fields: [level, text, icon]
+
   - type: card
     fields: [title, subtitle, media, actions, meta]
+
   - type: table
     fields: [title, columns, rows, actions, meta]
+
   - type: list
     fields: [title, items, actions, meta]
+
   - type: form
     fields: [title, schema, submit, meta]
+
   - type: button
     fields: [label, action, intent, style, icon, meta]
+
   - type: metric
     fields: [label, value, trend, meta]
+
   - type: tabs
     fields: [items, active, meta]
+
   - type: spacer
     fields: [size]
+
 styles:
   button:
     variants: [primary, secondary, ghost, danger]
