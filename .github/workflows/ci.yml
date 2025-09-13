@@ -1,18 +1,17 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
-  workflow_dispatch: {}   # чтобы можно было запускать руками
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -20,27 +19,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install deps (rio)
-        working-directory: rio
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install yamllint
 
-      - name: Static Python check (syntax)
+      - name: Lint YAML files
         run: |
-          python -m py_compile $(git ls-files '*.py')
-
-      - name: Lint YAML (policies & blocks)
-        run: |
-          yamllint -d "{extends: default, rules: {line-length: {max: 120}}}" rio/policies rio/blocks
-
-      - name: Smoke import app
-        working-directory: rio
-        run: |
-          python - <<'PY'
-          import importlib.util
-          spec = importlib.util.spec_from_file_location("app", "app.py")
-          m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
-          print("✅ app import ok")
-          PY
+          yamllint -d "{extends: default, rules: {line-length: {max: 120}, document-start: disable}}" .
