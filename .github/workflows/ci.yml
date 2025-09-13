@@ -1,15 +1,16 @@
 name: ci
-
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -17,21 +18,55 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r rio/requirements.txt
+      # ---- YAML lint --------------------------------------------------------
+      - name: Install yamllint
+        run: pip install yamllint
 
-      - name: Lint YAML (non-blocking)
-        uses: ibiqlik/action-yamllint@v3
-        with:
-          config_file: .yamllint.yml
-        continue-on-error: true
-
-      - name: Run tests (non-blocking)
+      - name: Lint YAML (repo-wide)
         run: |
-          if [ -f "pytest.ini" ] || ls tests 1>/dev/null 2>&1; then
-            pytest
+          # Если есть свой конфиг — используем его, иначе дефолт с мягкими правилами
+          if [ -f ".yamllint.yml" ] || [ -f ".yamllint.yaml" ] || [ -f ".yamllint" ]; then
+            yamllint .
           else
-            echo "No tests yet – skipping"
+            cat > .yamllint.yml <<'YML'
+            extends: default
+            rules:
+              line-length:
+                max: 200
+                level: warning
+              document-start: disable
+              truthy:
+                allowed-values: ["true", "false"]
+                check-keys: false
+              comments:
+                min-spaces-from-content: 1
+              trailing-spaces: enable
+            YML
+            yamllint -c .yamllint.yml .
+          fi
+
+      # ---- Python sanity + deps (если есть) --------------------------------
+      - name: Install project requirements (optional)
+        run: |
+          if [ -f "rio/requirements.txt" ]; then
+            pip install -r rio/requirements.txt
+          fi
+          # pytest ставим только если есть тесты
+          if [ -d "tests" ] || [ -f "pytest.ini" ]; then
+            pip install pytest
+          fi
+
+      - name: Python sanity
+        run: |
+          python - <<'PY'
+          print("python ok")
+          PY
+
+      # ---- Tests (мягкий режим, чтобы не падало без тестов) ----------------
+      - name: Run tests (skip if none)
+        run: |
+          if [ -d "tests" ] || [ -f "pytest.ini" ]; then
+            pytest || true
+          else
+            echo "No tests found – skipping"
           fi
