@@ -13,9 +13,9 @@ roles:
     dashboard:
       blocks:
         - {type: heading, level: 2, text: "G-in | Work Surface"}
-        - {type: tabs, items: ["Market","Chat","Pay"], active: "Chat"}
+        - {type: tabs, items: ["Market", "Chat", "Pay"], active: "Chat"}
         - {type: card, title: "My Orders", subtitle: "Recent", actions: ["order.create"]}
-        - {type: table, title: "Orders", columns: ["ID","Item","Status"], rows: [], actions: ["order.create"]}
+        - {type: table, title: "Orders", columns: ["ID", "Item", "Status"], rows: [], actions: ["order.create"]}
         - {type: button, label: "Create Order", style: "primary", action: "order.create"}
         - {type: metric, label: "Resonance", value: 0.82, trend: "+0.03"}
 
@@ -23,6 +23,6 @@ roles:
     dashboard:
       blocks:
         - {type: heading, level: 2, text: "Admin Console"}
-        - {type: tabs, items: ["Users","Orders","Signals"], active: "Users"}
-        - {type: table, title: "Users", columns: ["ID","Email","Role"], rows: [], actions: ["user.invite","user.block"]}
+        - {type: tabs, items: ["Users", "Orders", "Signals"], active: "Users"}
+        - {type: table, title: "Users", columns: ["ID", "Email", "Role"], rows: [], actions: ["user.invite", "user.block"]}
         - {type: metric, label: "Live Signals", value: 124, trend: "+8"}
