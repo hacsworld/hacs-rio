@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  rio:
+    build: ./rio
+    command: uvicorn app:app --host 0.0.0.0 --port 8700
+    ports:
+      - "8700:8700"

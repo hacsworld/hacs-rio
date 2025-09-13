@@ -1,0 +1,4 @@
+actions:
+  auth.signin:
+    roles: [guest, user]
+    effect: allow

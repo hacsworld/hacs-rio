@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+title: HACS RIO
+authors:
+  - family-names: Volkov
+    given-names: Ruslan
+license: MIT

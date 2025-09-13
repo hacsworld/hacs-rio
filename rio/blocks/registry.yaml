@@ -1,0 +1,3 @@
+types:
+  - type: heading
+    fields: [level, text]
