@@ -1,6 +1,5 @@
 ---
 version: 1
-
 types:
   - type: heading
     fields: [level, text, icon]
@@ -20,7 +19,6 @@ types:
     fields: [items, active, meta]
   - type: spacer
     fields: [size]
-
 styles:
   button:
     variants: [primary, secondary, ghost, danger]
