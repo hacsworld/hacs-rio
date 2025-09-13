@@ -1,0 +1,13 @@
+extends: default
+
+rules:
+  line-length:
+    max: 120          # Разрешаем до 120 символов в строке
+    level: warning
+  truthy:
+    level: warning    # "Истина"/"Ложь" не будут валить билд
+  comments-indentation: disable
+  indentation:
+    indent-sequences: false
+  document-start:
+    present: false    # "---" не обязателен
